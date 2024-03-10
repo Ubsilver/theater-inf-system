@@ -87,6 +87,7 @@ model Vid_role{
 model Spektakli{
   id Int @id @default(autoincrement())
   name String
+  opisanie String?
   photo String?
   role Role[]
   pokaz Pokaz[]
@@ -103,6 +104,7 @@ model Avtor{
   last_name String
   first_name String
   middle_name String?
+  o_avtore String?
   vek String
   strana String
 
