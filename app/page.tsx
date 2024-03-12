@@ -5,9 +5,9 @@ import {NextUIProvider} from "@nextui-org/react";
 export default function Home() {
   return (
     <NextUIProvider>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <p>content</p>
-      </main>
+    <div>
+      <p className="text-black font-bold text-40 leading-6 px-10 py-5">Главная страница</p>
+    </div>
     </NextUIProvider>   
   );
 }

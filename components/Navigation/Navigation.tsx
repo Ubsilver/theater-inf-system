@@ -5,6 +5,7 @@ import {ListboxWrapper} from "./ListboxWrapper";
 import { MdPeopleAlt } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import { FaMasksTheater } from "react-icons/fa6";
+import { GiTheaterCurtains } from "react-icons/gi";
 
 type NavigationProps = {
     children: React.ReactNode;
@@ -25,18 +26,18 @@ function Navigation({children}: NavigationProps) {
         <Listbox 
           aria-label="Multiple selection example"
           variant="flat"
-          disallowEmptySelection
+          
           selectionMode="single"
-          selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          
         >
-          <ListboxItem key="Сотрудники" startContent={<MdPeopleAlt />}>Сотрудники</ListboxItem>
-          <ListboxItem key="Репертуар" startContent={<IoLibrary />}>Репертуар</ListboxItem>
-          <ListboxItem key="Показы" startContent={<FaMasksTheater />}>Показы</ListboxItem>
+           <ListboxItem key="Театр" startContent={<GiTheaterCurtains />} href="/" >Театр</ListboxItem>
+          <ListboxItem key="Сотрудники" startContent={<MdPeopleAlt />} href="/employees">Сотрудники</ListboxItem>
+          <ListboxItem key="Репертуар" startContent={<IoLibrary />} href="/repertoire">Репертуар</ListboxItem>
+          <ListboxItem key="Показы" startContent={<FaMasksTheater />} href="/show">Показы</ListboxItem>
         </Listbox>
       </ListboxWrapper>
       <div className="flex flex-col">
-        <p className="text-black font-bold text-40 leading-6 px-10 py-5">{selectedValue}</p>
+        {/* <p className="text-black font-bold text-40 leading-6 px-10 py-5">{selectedValue}</p> */}
         {children}
       </div>
     </div>
