@@ -12,6 +12,51 @@ body {
   color: rgb(var(--foreground-rgb));
   background: white;
 }
+.employees-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  width: auto;
+  height: 170px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 10px;
+  padding: 5px 15px;
+}
+
+.employees-card img {
+  width: 100px;
+  height: 130px;
+  object-fit: cover;
+  margin:15px 10px;
+  border-radius: 6px;
+}
+
+.employees-card-text {
+  margin: 20px 10px;
+  font-size: 14px;
+}
+.employees-card-text h2{
+  font-size: 18px;
+}
+.employees-card-text p{
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @layer utilities {
   .text-balance {

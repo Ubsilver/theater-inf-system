@@ -1,11 +1,12 @@
 'use client'
 import React from "react";
-import {Listbox, ListboxItem} from "@nextui-org/react";
+import {Button, Listbox, ListboxItem} from "@nextui-org/react";
 import {ListboxWrapper} from "./ListboxWrapper";
 import { MdPeopleAlt } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import { FaMasksTheater } from "react-icons/fa6";
 import { GiTheaterCurtains } from "react-icons/gi";
+import Link from "next/link";
 
 type NavigationProps = {
     children: React.ReactNode;
@@ -30,14 +31,16 @@ function Navigation({children}: NavigationProps) {
           selectionMode="single"
           
         >
-           <ListboxItem key="Театр" startContent={<GiTheaterCurtains />} href="/" >Театр</ListboxItem>
+          <ListboxItem key="Театр" startContent={<GiTheaterCurtains />} href="/" >Театр</ListboxItem>
           <ListboxItem key="Сотрудники" startContent={<MdPeopleAlt />} href="/employees">Сотрудники</ListboxItem>
           <ListboxItem key="Репертуар" startContent={<IoLibrary />} href="/repertoire">Репертуар</ListboxItem>
           <ListboxItem key="Показы" startContent={<FaMasksTheater />} href="/show">Показы</ListboxItem>
         </Listbox>
+        <div className="flex mx-auto">
+        <Link href={"/addData"}><Button color="primary">Добавить данные</Button></Link>
+        </div>
       </ListboxWrapper>
       <div className="flex flex-col">
-        {/* <p className="text-black font-bold text-40 leading-6 px-10 py-5">{selectedValue}</p> */}
         {children}
       </div>
     </div>
