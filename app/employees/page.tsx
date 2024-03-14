@@ -37,7 +37,7 @@ export default async function Employees() {
     <div>
       <p className="text-black font-bold text-40 leading-6 px-10 py-5">Сотрудники</p>
       <div>
-        <div className="border-1 px-25 py-10">фильтры</div>
+        <div className="border-1 px-25 py-10 mx-30">фильтры</div>
         <div className="flex flex-row wrap">
           {
             employees.map((sotrudniki: any) => {
@@ -72,7 +72,7 @@ export default async function Employees() {
                   data_rojdenia={sotrudniki.data_rojdenia}
                   doljnolst={sotrudniki.doljnolst}
                   zarplata={sotrudniki.zarplata}
-                  // onDetailsClick={() => handleDetailsClick(sotrudniki.id)}                  
+                  onDetailsClick={() => handleDetailsClick(sotrudniki.id)}                  
                   />
               )
             })

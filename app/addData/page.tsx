@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react";
 import React from "react";
 import "./addData.css"
+import AddEmployeer from "./emplModal";
 
 export default function Show() {
 
@@ -9,6 +10,7 @@ export default function Show() {
       <p className="text-black font-bold text-40 leading-6 px-10 py-5">Добавить данные</p>
       <div className="add-btn">
         <div>
+          {/* <AddEmployeer /> */}
             <Button color="primary" variant="ghost">Добавить сотрудника</Button>
             <Button color="primary" variant="ghost">Добавить должность</Button>
             <Button color="primary" variant="ghost">Добавить подразделение</Button>
