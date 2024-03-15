@@ -1,6 +1,7 @@
 import React from "react";
 import "./EmployeesCard";
 import { Button } from "@nextui-org/react";
+// import ModalEmployees from "../Modal/Modal";
 
 type Props = {
   id: number;
@@ -39,7 +40,7 @@ export default function EmployeesCard({
         </h2>
         <p>Должность: {doljnolst.name}</p>
         <p>Дата рождения: {formattedDate}</p>
-        <Button onClick={() => {onDetailsClick()}}>Подробнее</Button>
+        {/* <button onClick={onDetailsClick = () =>{<ModalEmployees />}}>Подробности</button>       */}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, Link } from "@nextui-org/react";
 import React from "react";
 import "./addData.css"
 import AddEmployeer from "./emplModal";
@@ -11,7 +11,7 @@ export default function Show() {
       <div className="add-btn">
         <div>
           {/* <AddEmployeer /> */}
-            <Button color="primary" variant="ghost">Добавить сотрудника</Button>
+            <Link href="/addEmployees"><Button color="primary" variant="ghost">Добавить сотрудника</Button></Link>
             <Button color="primary" variant="ghost">Добавить должность</Button>
             <Button color="primary" variant="ghost">Добавить подразделение</Button>
         </div>

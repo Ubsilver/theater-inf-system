@@ -1,7 +1,6 @@
 import React from "react";
 import prisma from "@/prisma/prisma";
 import EmployeesCard from "@/components/EmployeesCard/EmployeesCard";
-import { Button, Modal, useDisclosure } from "@nextui-org/react";
 
 async function getEmployees() {
   const fieldsToSelect = {
