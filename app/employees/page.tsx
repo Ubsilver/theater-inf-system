@@ -1,5 +1,6 @@
 import React from "react";
 import prisma from "@/prisma/prisma";
+import './st.css'
 import EmployeesCard from "@/components/EmployeesCard/EmployeesCard";
 
 async function getEmployees() {
@@ -71,6 +72,7 @@ export default async function Employees() {
                   data_rojdenia={sotrudniki.data_rojdenia}
                   doljnolst={sotrudniki.doljnolst}
                   zarplata={sotrudniki.zarplata}
+                  podrazdelenie={sotrudniki.podrazdelenie}
                   onDetailsClick={() => handleDetailsClick(sotrudniki.id)}                  
                   />
               )

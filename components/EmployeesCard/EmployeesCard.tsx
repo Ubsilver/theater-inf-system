@@ -12,6 +12,7 @@ type Props = {
   data_rojdenia: Date;
   doljnolst: { id: number; name: string };
   zarplata: number;
+  podrazdelenie: { id: number; name: string };
   onDetailsClick: () => void;
 };
 
@@ -23,6 +24,8 @@ export default function EmployeesCard({
   pol,
   data_rojdenia,
   doljnolst,
+  podrazdelenie,
+  zarplata,
   onDetailsClick,
 }: Props) {
   const genderText = pol === "MELE" ? "Мужской" : "Женский";
@@ -40,6 +43,8 @@ export default function EmployeesCard({
         </h2>
         <p>Должность: {doljnolst.name}</p>
         <p>Дата рождения: {formattedDate}</p>
+        <p>{podrazdelenie.name}</p>
+        <p>Зарплата: {zarplata}руб.</p>
         {/* <button onClick={onDetailsClick = () =>{<ModalEmployees />}}>Подробности</button>       */}
       </div>
     </div>

@@ -37,7 +37,7 @@ function Navigation({children}: NavigationProps) {
           <ListboxItem key="Показы" startContent={<FaMasksTheater />} href="/show">Показы</ListboxItem>
         </Listbox>
         <div className="flex mx-auto">
-        <Link href={"/addData"}><Button color="primary">Добавить данные</Button></Link>
+        <Link href={"/addData"}><Button color="primary" fullWidth={true}>Добавить данные</Button></Link>
         </div>
       </ListboxWrapper>
       <div className="flex flex-col">
