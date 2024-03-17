@@ -2,6 +2,7 @@ import React from "react";
 import prisma from "@/prisma/prisma";
 import './st.css'
 import EmployeesCard from "@/components/EmployeesCard/EmployeesCard";
+import { Radio, RadioGroup } from "@nextui-org/react";
 
 async function getEmployees() {
   const fieldsToSelect = {
@@ -37,7 +38,36 @@ export default async function Employees() {
     <div>
       <p className="text-black font-bold text-40 leading-6 px-10 py-5">Сотрудники</p>
       <div>
-        <div className="border-1 px-25 py-10 mx-30">фильтры</div>
+        <div className="border-1 filter">
+          <div>
+          <RadioGroup
+            label="Сотрудники:"
+            orientation="horizontal"
+            color="primary"
+            
+            defaultValue="alls"
+          >
+            <Radio value="alls">Все</Radio>
+            <Radio value="nashi">Нашего театра</Radio>
+            <Radio value="prigshenie">Приглашенные</Radio>
+            <Radio value="students">Студенты училища</Radio>
+          </RadioGroup>
+
+          <RadioGroup
+            label="Должности:"
+            orientation="horizontal"
+            color="primary"
+            defaultValue="alld"
+          >
+            <Radio value="alld">Все</Radio>
+            <Radio value="actors">Актеры</Radio>
+            <Radio value="music">Музыканты</Radio>
+            <Radio value="postanovka">Постановщики</Radio>
+            <Radio value="slujachiy">Служащие</Radio>
+            <Radio value="director">Директор</Radio>
+          </RadioGroup>
+          </div>
+        </div>
         <div className="flex flex-row wrap">
           {
             employees.map((sotrudniki: any) => {

@@ -1,0 +1,20 @@
+.container{
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.mini-container{
+    margin-right: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 310px;
+}
+.elem{
+    margin-bottom: 10px;
+}
+.rill{
+    width: 200px;
+    margin-left: 810px;
+}
