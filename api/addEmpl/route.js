@@ -1,5 +1,7 @@
-import { Prisma } from "@prisma/client";
+import { prisma } from "@prisma/client";
 import { NextResponse } from "next/server"
+
+const prisma = new PrismaClient();
 
 export async function EMPLOYEE(request){
     const res = await request.json()
@@ -16,19 +18,27 @@ export async function EMPLOYEE(request){
         doljnolstId} = res;
     console.log({res})
 
-    const result = await prisma.post.create({
+    const result = await prisma.Sotrudniki.create({
         data: {
             last_name,
             first_name,
             middle_name,
             photo,
             pol,
-            data_rojdenia,
+            data_rojdenia: new Date(data_rojdenia),
             deti,
-            podrazdelenieId,
-            data_priema_na_rabotu,
+            podrazdelenie: {
+                connect: {
+                    id: podrazdelenieId
+                }
+            },
+            data_priema_na_rabotu: new Date(data_priema_na_rabotu),
             zarplata,
-            doljnolstId
+            doljnolst: {
+                connect: {
+                    id: doljnolstId
+                }
+            }
         }
     })
 

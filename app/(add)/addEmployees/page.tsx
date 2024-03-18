@@ -3,6 +3,7 @@ import { Input, Select, SelectItem } from "@nextui-org/react";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 import React from "react";
 import './addEmpl.css'
+import { Pol } from "@prisma/client";
 
 export default function Add() {
 
@@ -10,9 +11,9 @@ export default function Add() {
   const [first_name, setfirst_name] = React.useState("");
   const [middle_name, setmiddle_name] = React.useState("");
   const [data_rojdenia, setdata_rojdenia] = React.useState("");
-  const [deti, setdeti] = React.useState("");
+  const [deti1, setdeti] = React.useState("");
   const [data_priema_na_rabotu, setdata_priema_na_rabotu] = React.useState("");
-  const [zarplata, setzarplata] = React.useState("");
+  const [zarplata1, setzarplata] = React.useState("");
   const [photo, setphoto] = React.useState("");
 
 
@@ -21,7 +22,7 @@ export default function Add() {
   const [selectedKeysDolj, setSelectedKeysDolj] = React.useState(new Set(["Должность:"]));
   const [selectedKeysPodr, setSelectedKeysPodr] = React.useState(new Set(["Подразделение:"]));
 
-  const pol = selectedKeys.has('мужской пол') ? 'MELE' : 'FEMELE';
+  const pol: Pol = selectedKeys.has('мужской пол') ? Pol.MELE : Pol.FEMELE;
   const podrazdelenieId =
     selectedKeysPodr.has('сотрудник нашего театра') ? 1 :
     selectedKeysPodr.has('приглашенный сотрудник') ? 2 :
@@ -34,6 +35,9 @@ export default function Add() {
     selectedKeysDolj.has('служащий') ? 4:
     selectedKeysDolj.has('директор') ? 5:
     null;
+  const deti: number = parseInt(deti1);
+  const zarplata: number = parseInt(zarplata1);
+
 
   const selectedValue = React.useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
@@ -48,32 +52,34 @@ export default function Add() {
     [selectedKeysPodr]
   );
 
-    const HandleSumbit = (event: { preventDefault: () => void; }) =>{
-      event.preventDefault();
-
-      try{
-        fetch('/api/addEmpl',{
-          method: 'EMPLOYEE',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            last_name,
-            first_name,
-            middle_name,
-            photo,
-            pol,
-            data_rojdenia,
-            deti,
-            podrazdelenieId,
-            data_priema_na_rabotu,
-            zarplata,
-            doljnolstId,
-          }) })
-      } catch (error){
-        console.error(error)
-      }
+  const HandleSumbit = (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+  
+    try {
+      fetch('api/addEmpl', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          last_name,
+          first_name,
+          middle_name,
+          photo,
+          pol,
+          data_rojdenia,
+          deti,
+          podrazdelenieId,
+          data_priema_na_rabotu,
+          zarplata,
+          doljnolstId,
+        })
+      });
+    } catch (error) {
+      console.error(error);
     }
+  };
+  
 
   return (
     <form onSubmit={HandleSumbit}>
@@ -118,6 +124,7 @@ export default function Add() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu 
+                isRequired
                 variant="flat"
                 disallowEmptySelection
                 selectionMode="single"
@@ -133,6 +140,7 @@ export default function Add() {
   
           <div className="mini-container">
           <Input
+              isRequired
               type="text"
               label="Ссылка на фото"
               className="max-w-xs elem"
@@ -141,7 +149,7 @@ export default function Add() {
               value={photo}
               onValueChange={setphoto}
               />
-            <Input 
+            <Input
               className="elem"
               isRequired
               type="date" 
@@ -151,12 +159,13 @@ export default function Add() {
               onValueChange={setdata_rojdenia}
             />
             <Input
+              isRequired
               type="number"
               label="Кол-во детей"
               className="max-w-xs elem"
               variant="bordered"
               defaultValue="0"
-              value={deti}
+              value={deti1}
               onValueChange={setdeti}
               />
               <Dropdown className="elem">
@@ -170,6 +179,7 @@ export default function Add() {
               </DropdownTrigger>
               <DropdownMenu 
                 variant="flat"
+                isRequired
                 disallowEmptySelection
                 selectionMode="single"
                 // defaultSelectedKeys="мужской"
@@ -198,7 +208,7 @@ export default function Add() {
               type="number" 
               label="Зарплата" 
               variant="bordered"
-              value={zarplata}
+              value={zarplata1}
               onValueChange={setzarplata}
             />
             <Dropdown className="elem">
@@ -211,6 +221,7 @@ export default function Add() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu 
+              isRequired
               className="elem"
                 variant="flat"
                 disallowEmptySelection
