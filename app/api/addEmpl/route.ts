@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Pol } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -16,15 +16,13 @@ export async function POST(req: Request) {
     data_priema_na_rabotu,
     zarplata,
     doljnolstId,
-  } = await req.json(); // Предполагаем, что тело запроса является JSON
+  } = await req.json();
 
-  console.log(pol);
-
-  let polEnum;
+  let polEnum: Pol | undefined;
   if (pol === "MALE") {
-    polEnum = "MALE";
+    polEnum = Pol.MALE;
   } else if (pol === "FEMALE") {
-    polEnum = "FEMALE";
+    polEnum = Pol.FEMALE;
   } else {
     return NextResponse.json(
       { error: "Недопустимое значение для пола." },
@@ -46,7 +44,7 @@ export async function POST(req: Request) {
           connect: { id: podrazdelenieId },
         },
         data_priema_na_rabotu: new Date(data_priema_na_rabotu),
-        zarplata,
+        zarplata: +zarplata,
         doljnolst: {
           connect: { id: doljnolstId },
         },

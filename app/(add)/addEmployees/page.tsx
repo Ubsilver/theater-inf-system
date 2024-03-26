@@ -7,7 +7,7 @@ import {
   DropdownTrigger,
   Input,
 } from "@nextui-org/react";
-import React, { useState, useMemo, type Key, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "./addEmpl.css";
 import { Pol } from "@prisma/client";
 import { EmployeeData } from "@/models/Employee";
@@ -34,8 +34,8 @@ const getIdFromSelectedKeys = (
   selectedKeys: Set<string>,
   mappings: Mappings,
 ): number | null => {
-  for (let key of selectedKeys) {
-    if (mappings.hasOwnProperty(key)) {
+  for (const key of selectedKeys) {
+    if (Object.prototype.hasOwnProperty.call(mappings, key)) {
       return mappings[key];
     }
   }
