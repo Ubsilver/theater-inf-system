@@ -1,25 +1,28 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type {Metadata} from "next";
+import {Inter} from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation/Navigation";
+import {Providers} from "@/app/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-  title: "Информационная система театра",
-  description: "Курсовая работа",
+	title: "Информационная система театра",
+	description: "Курсовая работа",
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+	                                   children,
+                                   }: Readonly<{
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="ru">
-      <body className={inter.className}>
-        <Navigation>{children}</Navigation>
-        </body>
-    </html>
-  );
+	return (
+		<html lang="ru">
+		<body className={inter.className}>
+		<Providers>
+			<Navigation>{children}</Navigation>
+		</Providers>
+		</body>
+		</html>
+	);
 }

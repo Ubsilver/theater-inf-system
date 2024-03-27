@@ -1,249 +1,314 @@
-'use client'
-import { Input, Select, SelectItem } from "@nextui-org/react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-import React from "react";
-import './addEmpl.css'
+"use client";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+} from "@nextui-org/react";
+import React, { useState, useMemo, useEffect } from "react";
+import "./addEmpl.css";
 import { Pol } from "@prisma/client";
+import { EmployeeData } from "@/models/Employee";
+
+type Mappings = {
+  [key: string]: number;
+};
+
+const podrazdelenieMappings = {
+  "сотрудник нашего театра": 1,
+  "приглашенный сотрудник": 2,
+  "студент училища": 3,
+};
+
+const doljnolstMappings = {
+  актер: 1,
+  музыкант: 2,
+  постановщик: 3,
+  служащий: 4,
+  директор: 5,
+};
+
+const getIdFromSelectedKeys = (
+  selectedKeys: Set<string>,
+  mappings: Mappings,
+): number | null => {
+  for (const key of selectedKeys) {
+    if (Object.prototype.hasOwnProperty.call(mappings, key)) {
+      return mappings[key];
+    }
+  }
+  return null;
+};
 
 export default function Add() {
+  const [selectedPol, setSelectedPol] = useState(new Set(["Пол:"]));
 
-  const [last_name, setlast_name] = React.useState("");
-  const [first_name, setfirst_name] = React.useState("");
-  const [middle_name, setmiddle_name] = React.useState("");
-  const [data_rojdenia, setdata_rojdenia] = React.useState("");
-  const [deti1, setdeti] = React.useState("");
-  const [data_priema_na_rabotu, setdata_priema_na_rabotu] = React.useState("");
-  const [zarplata1, setzarplata] = React.useState("");
-  const [photo, setphoto] = React.useState("");
-
-
-
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Пол:"]));
-  const [selectedKeysDolj, setSelectedKeysDolj] = React.useState(new Set(["Должность:"]));
-  const [selectedKeysPodr, setSelectedKeysPodr] = React.useState(new Set(["Подразделение:"]));
-
-  const pol: Pol = selectedKeys.has('мужской пол') ? Pol.MELE : Pol.FEMELE;
-  const podrazdelenieId =
-    selectedKeysPodr.has('сотрудник нашего театра') ? 1 :
-    selectedKeysPodr.has('приглашенный сотрудник') ? 2 :
-    selectedKeysPodr.has('студент училища') ? 3 :
-    null;
-  const doljnolstId = 
-    selectedKeysDolj.has('актер') ? 1:
-    selectedKeysDolj.has('музыкант') ? 2:
-    selectedKeysDolj.has('постановщик') ? 3:
-    selectedKeysDolj.has('служащий') ? 4:
-    selectedKeysDolj.has('директор') ? 5:
-    null;
-  const deti: number = parseInt(deti1);
-  const zarplata: number = parseInt(zarplata1);
-
-
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
+  const [selectedKeysDolj, setSelectedKeysDolj] = useState(
+    new Set(["Должность:"]),
   );
-  const selectedValueDolj = React.useMemo(
+  const [selectedKeysPodr, setSelectedKeysPodr] = useState(
+    new Set(["Подразделение:"]),
+  );
+
+  const selectedPolValue = useMemo(() => {
+    if (selectedPol.size === 1 && selectedPol.has("Пол:")) {
+      return "Выберите пол";
+    }
+
+    if (selectedPol.has(Pol.FEMALE)) {
+      return "Женский пол";
+    }
+
+    return "Мужской пол";
+  }, [selectedPol]);
+
+  const selectedValueDolj = useMemo(
     () => Array.from(selectedKeysDolj).join(", ").replaceAll("_", " "),
-    [selectedKeysDolj]
+    [selectedKeysDolj],
   );
-  const selectedValuePodr = React.useMemo(
+  const selectedValuePodr = useMemo(
     () => Array.from(selectedKeysPodr).join(", ").replaceAll("_", " "),
-    [selectedKeysPodr]
+    [selectedKeysPodr],
   );
 
-  const HandleSumbit = (event: { preventDefault: () => void; }) => {
+  const [employeeData, setEmployeeData] = useState<EmployeeData>({
+    last_name: "",
+    first_name: "",
+    middle_name: "",
+    data_rojdenia: "",
+    deti: 0,
+    data_priema_na_rabotu: "",
+    zarplata: 0,
+    photo: "",
+    pol: "",
+    podrazdelenieId: null,
+    doljnolstId: null,
+  });
+
+  const HandleSumbit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-  
+
     try {
-      fetch('api/addEmpl', {
-        method: 'POST',
+      await fetch("api/addEmpl", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          last_name,
-          first_name,
-          middle_name,
-          photo,
-          pol,
-          data_rojdenia,
-          deti,
-          podrazdelenieId,
-          data_priema_na_rabotu,
-          zarplata,
-          doljnolstId,
-        })
+        body: JSON.stringify(employeeData),
       });
     } catch (error) {
+      console.log(JSON.stringify(employeeData));
       console.error(error);
     }
   };
-  
+
+  const handleChange = (
+    fieldName: keyof EmployeeData,
+    value: string | number | Pol,
+  ) => {
+    setEmployeeData((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  };
+
+  useEffect(() => {
+    // Предполагая, что Set всегда содержит один элемент
+    const pol: string = selectedPol.values().next().value;
+    handleChange("pol", pol);
+  }, [selectedPol]);
+
+  useEffect(() => {
+    const podrazdelenieId = getIdFromSelectedKeys(
+      selectedKeysPodr,
+      podrazdelenieMappings,
+    );
+    if (!podrazdelenieId) {
+      return;
+    }
+    handleChange("podrazdelenieId", podrazdelenieId);
+  }, [selectedKeysPodr]);
+
+  useEffect(() => {
+    const doljnolstId = getIdFromSelectedKeys(
+      selectedKeysDolj,
+      doljnolstMappings,
+    );
+    if (!doljnolstId) {
+      return;
+    }
+    handleChange("doljnolstId", doljnolstId);
+  }, [selectedKeysDolj]);
 
   return (
     <form onSubmit={HandleSumbit}>
       {
         <div>
-        <p className="text-black font-bold text-40 leading-6 px-10 py-5">Добавить сотрудника</p>
-        <div className="container">
-          <div className="mini-container">
-            <Input
-              isRequired
-              type="text"
-              label="Имя"
-              className="max-w-xs elem"
-              variant="bordered"
-              value={last_name}
-              onValueChange={setlast_name}
-            />
-            <Input
-              isRequired
-              type="text"
-              label="Фамилия"
-              className="max-w-xs elem"
-              variant="bordered"
-              value={first_name}
-              onValueChange={setfirst_name}
-            />
-            <Input
-              type="text"
-              label="Отчество"
-              className="max-w-xs elem"
-              variant="bordered"
-              value={middle_name}
-              onValueChange={setmiddle_name}
-            />
-            <Dropdown className="elem">
-              <DropdownTrigger>
-                <Button 
-                  variant="bordered" 
-                  className="capitalize"
-                >
-                  {selectedValue}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu 
+          <p className="text-40 px-10 py-5 font-bold leading-6 text-black">
+            Добавить сотрудника
+          </p>
+          <div className="container">
+            <div className="mini-container">
+              <Input
                 isRequired
-                variant="flat"
-                disallowEmptySelection
-                selectionMode="single"
-                // defaultSelectedKeys="мужской"
-                selectedKeys={selectedKeys}
-                onSelectionChange={setSelectedKeys}
-              >
-                <DropdownItem key="мужской">мужской пол</DropdownItem>
-                <DropdownItem key="женский">женский пол</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-  
-          <div className="mini-container">
-          <Input
-              isRequired
-              type="text"
-              label="Ссылка на фото"
-              className="max-w-xs elem"
-              variant="bordered"
-              defaultValue="0"
-              value={photo}
-              onValueChange={setphoto}
+                type="text"
+                label="Имя"
+                className="elem max-w-xs"
+                variant="bordered"
+                value={employeeData.first_name}
+                onChange={(e) => handleChange("first_name", e.target.value)}
               />
-            <Input
-              className="elem"
-              isRequired
-              type="date" 
-              label="Дата рождения" 
-              variant="bordered"
-              value={data_rojdenia}
-              onValueChange={setdata_rojdenia}
-            />
-            <Input
-              isRequired
-              type="number"
-              label="Кол-во детей"
-              className="max-w-xs elem"
-              variant="bordered"
-              defaultValue="0"
-              value={deti1}
-              onValueChange={setdeti}
+              <Input
+                isRequired
+                type="text"
+                label="Фамилия"
+                className="elem max-w-xs"
+                variant="bordered"
+                value={employeeData.last_name}
+                onChange={(e) => handleChange("last_name", e.target.value)}
+              />
+              <Input
+                type="text"
+                label="Отчество"
+                className="elem max-w-xs"
+                variant="bordered"
+                value={employeeData.middle_name}
+                onChange={(e) => handleChange("middle_name", e.target.value)}
               />
               <Dropdown className="elem">
-              <DropdownTrigger>
-                <Button 
-                  variant="bordered" 
-                  className="capitalize"
+                <DropdownTrigger>
+                  <Button variant="bordered" className="capitalize">
+                    {selectedPolValue}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Выберите пол"
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedKeys={selectedPol}
+                  onSelectionChange={(keys) =>
+                    setSelectedPol(keys as Set<string>)
+                  }
                 >
-                  {selectedValuePodr}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu 
-                variant="flat"
+                  <DropdownItem key={Pol.MALE}>мужской пол</DropdownItem>
+                  <DropdownItem key={Pol.FEMALE}>женский пол</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+
+            <div className="mini-container">
+              <Input
                 isRequired
-                disallowEmptySelection
-                selectionMode="single"
-                // defaultSelectedKeys="мужской"
-                selectedKeys={selectedKeysPodr}
-                onSelectionChange={setSelectedKeysPodr}
-              >
-                <DropdownItem key="сотрудник нашего театра">сотрудник нашего театра</DropdownItem>
-                <DropdownItem key="приглашенный сотрудник">приглашенный сотрудник</DropdownItem>
-                <DropdownItem key="студент училища">студент училища</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-          <div className="mini-container">
-          <Input 
-              isRequired
-              type="date" 
-              className="elem"
-              label="Дата приема на работу" 
-              variant="bordered"
-              value={data_priema_na_rabotu}
-              onValueChange={setdata_priema_na_rabotu}
-            />
-          <Input 
-            className="elem"
-              isRequired
-              type="number" 
-              label="Зарплата" 
-              variant="bordered"
-              value={zarplata1}
-              onValueChange={setzarplata}
-            />
-            <Dropdown className="elem">
-              <DropdownTrigger>
-                <Button 
-                  variant="bordered" 
-                  className="capitalize"
+                type="text"
+                label="Ссылка на фото"
+                className="elem max-w-xs"
+                variant="bordered"
+                defaultValue="0"
+                value={employeeData.photo}
+                onChange={(e) => handleChange("photo", e.target.value)}
+              />
+              <Input
+                className="elem"
+                isRequired
+                type="date"
+                label="Дата рождения"
+                variant="bordered"
+                value={employeeData.data_rojdenia}
+                onChange={(e) => handleChange("data_rojdenia", e.target.value)}
+              />
+              <Input
+                isRequired
+                type="number"
+                label="Кол-во детей"
+                className="elem max-w-xs"
+                variant="bordered"
+                defaultValue="0"
+                value={employeeData.deti.toString()}
+                onChange={(e) => handleChange("deti", e.target.value)}
+              />
+              <Dropdown className="elem">
+                <DropdownTrigger>
+                  <Button variant="bordered" className="capitalize">
+                    {selectedValuePodr}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Выберите подразделение"
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedKeys={selectedKeysPodr}
+                  onSelectionChange={(keys) =>
+                    setSelectedKeysPodr(keys as Set<string>)
+                  }
                 >
-                  {selectedValueDolj}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu 
-              isRequired
-              className="elem"
-                variant="flat"
-                disallowEmptySelection
-                selectionMode="single"
-                // defaultSelectedKeys="мужской"
-                selectedKeys={selectedKeysDolj}
-                onSelectionChange={setSelectedKeysDolj}
-              >
-                <DropdownItem key="актер">актер</DropdownItem>
-                <DropdownItem key="музыкант">музыкант</DropdownItem>
-                <DropdownItem key="постановщик">постановщик</DropdownItem>
-                <DropdownItem key="служащий">служащий</DropdownItem>
-                <DropdownItem key="директор">директор</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            
+                  <DropdownItem key="сотрудник нашего театра">
+                    сотрудник нашего театра
+                  </DropdownItem>
+                  <DropdownItem key="приглашенный сотрудник">
+                    приглашенный сотрудник
+                  </DropdownItem>
+                  <DropdownItem key="студент училища">
+                    студент училища
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            <div className="mini-container">
+              <Input
+                isRequired
+                type="date"
+                className="elem"
+                label="Дата приема на работу"
+                variant="bordered"
+                value={employeeData.data_priema_na_rabotu}
+                onChange={(e) =>
+                  handleChange("data_priema_na_rabotu", e.target.value)
+                }
+              />
+              <Input
+                className="elem"
+                isRequired
+                type="number"
+                label="Зарплата"
+                variant="bordered"
+                value={employeeData.zarplata.toString()}
+                onChange={(e) => handleChange("zarplata", e.target.value)}
+              />
+              <Dropdown className="elem">
+                <DropdownTrigger>
+                  <Button variant="bordered" className="capitalize">
+                    {selectedValueDolj}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Выберите должность"
+                  className="elem"
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedKeys={selectedKeysDolj}
+                  onSelectionChange={(keys) =>
+                    setSelectedKeysDolj(keys as Set<string>)
+                  }
+                >
+                  <DropdownItem key="актер">актер</DropdownItem>
+                  <DropdownItem key="музыкант">музыкант</DropdownItem>
+                  <DropdownItem key="постановщик">постановщик</DropdownItem>
+                  <DropdownItem key="служащий">служащий</DropdownItem>
+                  <DropdownItem key="директор">директор</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
           </div>
+          <Button className="rill" color="primary" type="submit">
+            Создать
+          </Button>
         </div>
-        <Button className="rill" color="primary" type="submit" >Создать</Button>
-      </div>
       }
     </form>
-    
   );
 }

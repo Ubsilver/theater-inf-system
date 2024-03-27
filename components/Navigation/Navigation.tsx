@@ -45,6 +45,6 @@ function Navigation({children}: NavigationProps) {
       </div>
     </div>
   );
-};
+}
 
 export default Navigation;

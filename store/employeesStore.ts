@@ -1,4 +1,4 @@
-import {getEmployeesFx} from "@/api/employeers";
+import {getEmployeesFx} from "@/app/api/employeers";
 import {createStore} from "effector";
 
 export const employeesStore = createStore([]);

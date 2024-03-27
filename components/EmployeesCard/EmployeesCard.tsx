@@ -28,7 +28,6 @@ export default function EmployeesCard({
   zarplata,
   onDetailsClick,
 }: Props) {
-  const genderText = pol === "MELE" ? "Мужской" : "Женский";
   const date = new Date(data_rojdenia);
   const formattedDate = `${date.getDate()}.${
     date.getMonth() + 1
