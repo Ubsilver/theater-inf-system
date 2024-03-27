@@ -1,83 +1,61 @@
-
-import React, { useState } from "react";
-import prisma from "@/prisma/prisma";
+'use client'
+import React, { useEffect, useState } from "react";
 import './st.css'
 import EmployeesCard from "@/components/EmployeesCard/EmployeesCard";
 import { Radio, RadioGroup } from "@nextui-org/react";
-import {Popover, PopoverTrigger, PopoverContent, Button, Input} from "@nextui-org/react";
+import RadioGroupComponent from "@/components/RadioGroupComponent/RadioGroupComponent";
+import { getEmployees } from "./api";
 
-
-
-async function getEmployees() {
-  const fieldsToSelect = {
-    id: true,
-    photo: true,
-    last_name: true,
-    first_name: true,
-    pol: true,
-    data_rojdenia: true,
-    deti: true,
-    data_priema_na_rabotu: true,
-    zarplata: true,
-    doljnolst: true,
-    podrazdelenie: true,
-    zvanie_sotrudnikov: true,
-    role_sotrudnika: true,
-  };
-  
-  const employees = await prisma.sotrudniki.findMany({ select: fieldsToSelect });  
-  return employees;
+interface Employee {
+  id: number;
+  photo: string | null;
+  last_name: string;
+  first_name: string;
+  pol: string;
+  data_rojdenia: Date;
+  deti: number;
+  data_priema_na_rabotu: Date;
+  zarplata: number;
+  doljnolst: { id: number; name: string };
+  podrazdelenie: { id: number; name: string };
+  zvanie_sotrudnikov: any[];
+  role_sotrudnika: any[];
 }
-
 
 const defaultImage = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcytricks.com%2Fpenyebab-foto-profil-wa-orang-lain-tidak-terlihat%2F&psig=AOvVaw2jACcVx5wfcNvTY9cYLa6k&ust=1710413874785000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPC0rK2K8YQDFQAAAAAdAAAAABAJ";
 function handleDetailsClick(key: number){
    console.log("оно работает")
 }
 
+export default function Employees() {
+  const [selectedOption, setSelectedOption] = useState('alls');
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getEmployees();
+      setEmployees(data);
+    }
+    fetchData();
+  }, []);
 
-export default async function Employees() {
-  const employees = await getEmployees();
-  // const [selectedOption, setSelectedOption] = useState('alls');
-
-  // const handleRadioChange = (e: { target: { value: any; }; }) => {
-  //   const selectedValue = e.target.value;
-  //   console.log("Выбранная категория сотрудников:", selectedValue);
-
-  //   switch (selectedValue) {
-  //     case "alls":
-  //       console.log("Все сотрудники");
-  //       break;
-  //     case "nashi":
-  //       console.log("Сотрудники нашего театра");
-  //       break;
-  //     case "prigshenie":
-  //       console.log("Приглашенные сотрудники");
-  //       break;
-  //     case "students":
-  //       console.log("Студенты училища");
-  //       break;
-  //     default:
-  //       console.log("Неизвестное значение");
-  //       break;
-  //   }  
-  // };
-
+  const handleRadioChange = (value: React.SetStateAction<string>) => {
+    setSelectedOption(value);
+  };
   return (
     <div >
       <p className="text-black font-bold text-40 leading-6 px-10 py-5">Сотрудники</p>
       <div>
         <div className="border-1 filter">
           <div>
-          <RadioGroup
+          {/* <RadioGroup
             label="Сотрудники:"
             orientation="horizontal"
             color="primary"
             defaultValue="alls"
             // onChange={handleRadioChange}
             // value={selectedOption}
-            
+
             // onChange={(e) => setSelectedOption(e.target.value)} 
       
           >
@@ -85,8 +63,8 @@ export default async function Employees() {
             <Radio value="nashi">Нашего театра</Radio>
             <Radio value="prigshenie">Приглашенные</Radio>
             <Radio value="students">Студенты училища</Radio>
-          </RadioGroup>
-
+          </RadioGroup> */}
+          <RadioGroupComponent onChange={handleRadioChange} />
           <RadioGroup
             label="Должности:"
             orientation="horizontal"
@@ -124,7 +102,7 @@ export default async function Employees() {
                   zarplata={sotrudniki.zarplata}
                   podrazdelenie={sotrudniki.podrazdelenie}
                   onDetailsClick={() => handleDetailsClick(sotrudniki.id)}                  
-                  />
+                />
               )
             })
           }
