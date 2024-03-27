@@ -87,6 +87,25 @@ export default function Add() {
     doljnolstId: null,
   });
 
+  const resetForm = () => {
+    setEmployeeData({
+      last_name: "",
+      first_name: "",
+      middle_name: "",
+      data_rojdenia: "",
+      deti: 0,
+      data_priema_na_rabotu: "",
+      zarplata: 0,
+      photo: "",
+      pol: "",
+      podrazdelenieId: null,
+      doljnolstId: null,
+    });
+    setSelectedPol(new Set(["Пол:"]));
+    setSelectedKeysDolj(new Set(["Должность:"]));
+    setSelectedKeysPodr(new Set(["Подразделение:"]));
+  };
+
   const HandleSumbit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
@@ -98,6 +117,8 @@ export default function Add() {
         },
         body: JSON.stringify(employeeData),
       });
+      resetForm();
+      alert('Сотрудник успешно добавлен');
     } catch (error) {
       console.log(JSON.stringify(employeeData));
       console.error(error);

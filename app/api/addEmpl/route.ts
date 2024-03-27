@@ -50,7 +50,6 @@ export async function POST(req: Request) {
         },
       },
     });
-
     return NextResponse.json({ result }, { status: 200 });
   } catch (error) {
     console.error("Ошибка при создании сотрудника:", error);

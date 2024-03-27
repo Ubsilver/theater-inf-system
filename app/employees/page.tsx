@@ -1,8 +1,12 @@
-import React from "react";
+
+import React, { useState } from "react";
 import prisma from "@/prisma/prisma";
 import './st.css'
 import EmployeesCard from "@/components/EmployeesCard/EmployeesCard";
 import { Radio, RadioGroup } from "@nextui-org/react";
+import {Popover, PopoverTrigger, PopoverContent, Button, Input} from "@nextui-org/react";
+
+
 
 async function getEmployees() {
   const fieldsToSelect = {
@@ -31,11 +35,37 @@ function handleDetailsClick(key: number){
    console.log("оно работает")
 }
 
+
+
 export default async function Employees() {
   const employees = await getEmployees();
+  // const [selectedOption, setSelectedOption] = useState('alls');
+
+  // const handleRadioChange = (e: { target: { value: any; }; }) => {
+  //   const selectedValue = e.target.value;
+  //   console.log("Выбранная категория сотрудников:", selectedValue);
+
+  //   switch (selectedValue) {
+  //     case "alls":
+  //       console.log("Все сотрудники");
+  //       break;
+  //     case "nashi":
+  //       console.log("Сотрудники нашего театра");
+  //       break;
+  //     case "prigshenie":
+  //       console.log("Приглашенные сотрудники");
+  //       break;
+  //     case "students":
+  //       console.log("Студенты училища");
+  //       break;
+  //     default:
+  //       console.log("Неизвестное значение");
+  //       break;
+  //   }  
+  // };
 
   return (
-    <div>
+    <div >
       <p className="text-black font-bold text-40 leading-6 px-10 py-5">Сотрудники</p>
       <div>
         <div className="border-1 filter">
@@ -44,8 +74,12 @@ export default async function Employees() {
             label="Сотрудники:"
             orientation="horizontal"
             color="primary"
-            
             defaultValue="alls"
+            // onChange={handleRadioChange}
+            // value={selectedOption}
+            
+            // onChange={(e) => setSelectedOption(e.target.value)} 
+      
           >
             <Radio value="alls">Все</Radio>
             <Radio value="nashi">Нашего театра</Radio>
@@ -58,6 +92,7 @@ export default async function Employees() {
             orientation="horizontal"
             color="primary"
             defaultValue="alld"
+            isDisabled
           >
             <Radio value="alld">Все</Radio>
             <Radio value="actors">Актеры</Radio>
@@ -69,29 +104,14 @@ export default async function Employees() {
           </div>
         </div>
         <div className="flex flex-row wrap">
+        {/* {selectedOption === 'alls' && <div>Отображается содержимое для "Все"</div>} */}
           {
             employees.map((sotrudniki: any) => {
               const date = new Date(sotrudniki.data_rojdenia);
               const formattedDate = `${date.getDate()}.${(date.getMonth() + 1)}.${date.getFullYear()}`;
 
               return (
-                // <div className='employees-card' key={sotrudniki.id}>
-                //   <img src={sotrudniki.photo || defaultImage} alt="фото сотрудника" />
-                //   <h2>{sotrudniki.last_name} {sotrudniki.first_name}</h2>
-                //   <p>Должность: {doljnolst.name}</p>
-                //   <p>Дата рождения: {formattedDate}</p>
-                //   <Button>Подробнее</Button>
-                // </div>
-    //             <div className='employees-card'>
-    //   <img src={photo} alt="фото сотрудника" />
-    //   <div className='employees-card-text'>
-    //   <h2>{last_name} {first_name}</h2>
-    //   <p>Должность: {doljnolst.name}</p>
-    //   <p>Дата рождения: {formattedDate}</p>
-    //   <Button onClick={onDetailsClick}>Подробнее</Button>
-    //   </div>
-      
-    // </div>
+                
                 <EmployeesCard
                   key={sotrudniki.id}
                   id={sotrudniki.id}
