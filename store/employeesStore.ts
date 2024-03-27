@@ -1,5 +1,5 @@
-import {getEmployeesFx} from "@/app/api/employeers";
-import {createStore} from "effector";
+//import { getEmployeesFx } from "@/app/employeers/page";
+import { createStore } from "effector";
 
 export const employeesStore = createStore([]);
 
