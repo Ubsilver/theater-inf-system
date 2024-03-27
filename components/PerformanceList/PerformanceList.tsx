@@ -1,5 +1,6 @@
-'use client'
-import { Bilet, Pokaz, Spektakli, Zal } from '@prisma/client';
+"use client";
+import React, { FC } from "react";
+import { Bilet, Spektakli, Zal } from "@prisma/client";
 
 interface Performance {
   id: number;
@@ -13,7 +14,7 @@ interface Props {
   performances: Performance[];
 }
 
-const PerformanceList: React.FC<Props> = ({ performances }) => (
+const PerformanceList: FC<Props> = ({ performances }) => (
   <ul>
     {performances.map((Pokaz) => (
       <li key={Pokaz.id}>
