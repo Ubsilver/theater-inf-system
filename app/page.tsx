@@ -38,7 +38,7 @@ export default async function Home() {
         <div className="flex row">
           <div className="pokaz-card">
             <img src="https://img4.labirint.ru/rc/75568dcf624c0e8c79ab9b5326f11076/363x561q80/books65/640776/cover.jpg?1613035902" alt="." className="img-pokaz" />
-            <div>            
+            <div className="text">            
               <p className="nazvanie">Гамлет</p>
               <p className="janr">Драма</p>
               <p className="data-vremia">30.03.24 в 16:00</p>
@@ -47,7 +47,7 @@ export default async function Home() {
           </div>
           <div className="pokaz-card">
             <img src="https://img3.labirint.ru/rc/730322d89feccd0052907fe40a2139e6/363x561q80/books59/582393/cover.jpg?1612704626"></img>
-            <div>            
+            <div className="text">            
               <p className="nazvanie">Ромео и Джульетта</p>
               <p className="janr">Трагедия</p>
               <p className="data-vremia">01.04.24 в 20:00</p>
@@ -57,7 +57,7 @@ export default async function Home() {
 
           <div className="pokaz-card">
           <img src="https://img4.labirint.ru/rc/75568dcf624c0e8c79ab9b5326f11076/363x561q80/books65/640776/cover.jpg?1613035902" alt="." className="img-pokaz" />
-            <div>            
+            <div className="text">            
               <p className="nazvanie">Гамлет</p>
               <p className="janr">Драма</p>
               <p className="data-vremia">01.04.24 в 18:00</p>

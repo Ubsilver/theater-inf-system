@@ -59,7 +59,7 @@ function Navigation({ children }: NavigationProps) {
         </Listbox>
         <div className="mx-auto flex">
           <Link href={"/addData"}>
-            <Button color="primary" fullWidth={true}>
+            <Button color="primary" className="my-2">
               Добавить данные
             </Button>
           </Link>

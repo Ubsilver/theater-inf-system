@@ -47,8 +47,10 @@ body {
 .employees-card-text p {
     margin-bottom: 5px;
 }
-
-.pokaz-card {
+.text{
+    margin: 0 10px;
+}
+.pokaz-card { 
     display: flex;
     justify-content: center;
     width: auto;
@@ -57,18 +59,21 @@ body {
     border-radius: 10px;
     overflow: hidden;
     margin: 15px 10px;
-    padding: 5px 15px;
+    padding: 15px;
 }
-
+.data-vremia{
+    margin-top: 55px;
+}
 .pokaz-card img {
     width: 100px;
     height: 150px;
     object-fit: cover;
-    margin: 15px 10px;
-    border-radius: 6px;
+    margin: 0 10px;
     border: 1px solid #ccc;
 }
-
+.nazvanie{
+    font-weight: 600;
+}
 .zag {
     margin-left: 30px;
 }
